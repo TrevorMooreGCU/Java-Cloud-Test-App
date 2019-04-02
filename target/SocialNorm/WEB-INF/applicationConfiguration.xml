@@ -1,0 +1,103 @@
+<!-- 
+Trevor Moore
+CST-323
+1/10/2019
+This assignment was completed in collaboration with Trevor Moore and Aaron Ross
+
+We used source code from the following websites to complete this assignment:
+http://javawebtutor.com/articles/spring/configuring-static-resources-in-spring-mvc.php
+https://www.tutorialspoint.com/spring/spring_exception_handling_example.htm
+
+For figuring out how to map to js and css files in the resources directory, and how to implement a global exception handler
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd       
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <context:component-scan base-package="com.cloudapplication" />
+   <context:annotation-config/>
+   <mvc:annotation-driven />
+   
+   <bean id="viewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"/>
+ 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/layouts/layouts.xml</value>
+				<value>/WEB-INF/layouts/views.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Define bean of type SimpleMappingExceptionResolver for mapping/handling exceptions-->
+	<bean class = "org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+      <property name = "exceptionMappings">
+         <props>
+            <prop key = "com.socialnorm.services.utility.GlobalExceptionHandler">
+               customException
+            </prop>
+         </props>
+      </property>
+      <property name = "defaultErrorView" value = "error"/>
+   </bean>
+	
+	<!-- this maps our open source resources to their location so that we can reference them in our jsp files -->
+	 <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <mvc:annotation-driven />
+    
+    <!-- Configuration Parameters -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:config/config.properties"/>
+    </bean>  
+   
+   <!-- Intercepter -->
+    <aop:aspectj-autoproxy/>
+    <bean id="tracer" class="com.cloudapplication.services.utility.Tracer"> </bean>
+    <aop:config>
+        <aop:pointcut id="businessServices" expression="execution(* com.cloudapplication.services.business..*(..))"/>
+        <aop:aspect id="aroundBusiness" ref="tracer">
+            <aop:around pointcut-ref="businessServices" method="doBasicProfiling"/>
+        </aop:aspect>
+    </aop:config>
+    <aop:config>
+        <aop:pointcut id="dataServices" expression="execution(* com.cloudapplication.services.data..*(..))"/>
+        <aop:aspect id="aroundData" ref="tracer">
+            <aop:around pointcut-ref="dataServices" method="doBasicProfiling"/>
+        </aop:aspect>
+    </aop:config>
+    <aop:config>
+        <aop:pointcut id="controllerServices" expression="execution(* com.cloudapplication.controller..*(..))"/>
+        <aop:aspect id="aroundController" ref="tracer">
+            <aop:around pointcut-ref="controllerServices" method="doBasicProfiling"/>
+        </aop:aspect>
+    </aop:config>
+    <aop:config>
+        <aop:pointcut id="businessPointcut" expression="within(com.cloudapplication.services.business..*)"/>
+        <aop:aspect id="withinBusiness" ref="tracer">
+            <aop:before pointcut-ref="businessPointcut" method="inBusinessServiceLayer"/>
+        </aop:aspect>
+    </aop:config>
+    <aop:config>
+        <aop:pointcut id="dataPointcut" expression="within(com.cloudapplication.services.data..*)"/>
+        <aop:aspect id="withinData" ref="tracer">
+            <aop:before pointcut-ref="dataPointcut" method="inDataServiceLayer"/>
+        </aop:aspect>
+    </aop:config>
+    <aop:config>
+        <aop:pointcut id="controllerPointcut" expression="within(com.cloudapplication.controller..*)"/>
+        <aop:aspect id="withinController" ref="tracer">
+            <aop:before pointcut-ref="controllerPointcut" method="inControllerLayer"/>
+        </aop:aspect>
+    </aop:config>
+   
+</beans>

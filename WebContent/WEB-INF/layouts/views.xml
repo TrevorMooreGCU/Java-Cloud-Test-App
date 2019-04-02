@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<!-- 
+Trevor Moore
+CST-323
+1/10/2019
+This assignment was completed in collaboration with Trevor Moore and Aaron Ross
+-->
+
+<tiles-definitions>
+	<!-- NOTE! WE MUST ADD ALL BODY VIEWS TO THE PAGE (EVERY SINGLE JSP FILE) -->
+	
+	<definition name="categoryView" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/categoryView.jsp" />
+	</definition>
+	<definition name="createTopic" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/createTopic.jsp" />
+	</definition>
+	<definition name="customException" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/customException.jsp" />
+	</definition>
+	<definition name="deleteTopic" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/deleteTopic.jsp" />
+	</definition>
+	<definition name="error" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/error.jsp" />
+	</definition>
+	<definition name="updateTopic" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/updateTopic.jsp" />
+	</definition>
+	<definition name="viewAllTopics" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/viewAllTopics.jsp" />
+	</definition>
+	<definition name="viewTopic" extends="SecureTemplate">
+    	<put-attribute name="body" value="/WEB-INF/pages/viewTopic.jsp" />
+	</definition>
+	
+</tiles-definitions>
+
+
+

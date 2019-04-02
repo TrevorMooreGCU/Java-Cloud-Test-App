@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+ <!-- 
+Trevor Moore
+CST-323
+1/10/2019
+This assignment was completed in collaboration with Trevor Moore and Aaron Ross
+-->
+ 
+<tiles-definitions>
+	<!-- THIS DEFINES THE TEMPLATE FILE WE USE FOR BEING LOGGED IN AND EXCEPTIONS -->
+    <definition name="SecureTemplate" template="/WEB-INF/layouts/template/defaultTemplate.jsp">
+		<put-attribute name="title" value="Home" />
+		
+		<!--  THIS DEFINES WHAT FILE THE HEADER IS -->
+		<put-attribute name="header" value="/WEB-INF/layouts/template/secureHeader.jsp" />
+		<put-attribute name="body" value="" />
+		
+		<!--  THIS DEFINES WHAT FILE THE FOOTER IS -->
+		<put-attribute name="footer" value="/WEB-INF/layouts/template/footer.jsp" />
+	</definition>
+</tiles-definitions>
